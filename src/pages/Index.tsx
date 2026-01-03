@@ -32,6 +32,7 @@ const Index = () => {
   const [pixCode, setPixCode] = useState<string | null>(null);
   const [pixError, setPixError] = useState<string | null>(null);
   const [currentOrderId, setCurrentOrderId] = useState<string | null>(null);
+  const [currentOrderType, setCurrentOrderType] = useState<"subscription" | "whatsapp" | null>(null);
   const [showWhatsappAccessModal, setShowWhatsappAccessModal] = useState(false);
 
   useEffect(() => {
@@ -55,7 +56,16 @@ const Index = () => {
         (payload) => {
           const newStatus = (payload.new as any).status;
           if (newStatus === "paid") {
-            setShowWhatsappAccessModal(true);
+            if (currentOrderType === "whatsapp") {
+              setShowWhatsappAccessModal(true);
+            } else if (currentOrderType === "subscription") {
+              // Redireciona para o grupo de assinantes após pagamento aprovado
+              window.open(
+                "https://chat.whatsapp.com/ED0zKAGCwMGCydFzuJpYa9",
+                "_blank",
+                "noopener,noreferrer",
+              );
+            }
           }
         },
       )
@@ -64,7 +74,7 @@ const Index = () => {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [currentOrderId]);
+  }, [currentOrderId, currentOrderType]);
 
   const trackEvent = (eventType: string) => {
     supabase.from("analytics_events").insert({ event_type: eventType });
@@ -107,6 +117,7 @@ const Index = () => {
       setPixCode(data.pix.code || null);
       if (data.orderId) {
         setCurrentOrderId(data.orderId);
+        setCurrentOrderType(type);
       }
       trackEvent(type === "whatsapp" ? "click_whatsapp_pix" : "click_plan_pix");
     } catch (error) {
