@@ -17,7 +17,7 @@ const Admin = () => {
     clicksPlan: 0,
     clicksWhatsApp: 0,
     payments: 0,
-    revenue: 540,
+    revenue: 0,
   });
 
   const handleLogin = (e: React.FormEvent) => {
@@ -34,26 +34,38 @@ const Admin = () => {
     if (!authenticated) return;
 
     const fetchStats = async () => {
-      const { data, error } = await supabase
-        .from("analytics_events")
-        .select("event_type");
+      const [analyticsResult, ordersResult] = await Promise.all([
+        supabase.from("analytics_events").select("event_type"),
+        supabase.from("orders").select("amount_cents,status"),
+      ]);
 
-      if (error) {
-        console.error("Error fetching stats:", error);
+      if (analyticsResult.error) {
+        console.error("Error fetching analytics stats:", analyticsResult.error);
+      }
+      if (ordersResult.error) {
+        console.error("Error fetching orders stats:", ordersResult.error);
       }
 
-      // Dados fake para combinar com o faturamento de R$ 540,00
-      // Você pode ajustar esses números depois se quiser.
-      const fakeVisits = 120;
-      const fakeClicksPlan = 36; // por exemplo, 36 cliques gerando R$ 540,00
-      const fakeClicksWhatsApp = 12;
+      const analyticsData = analyticsResult.data || [];
+      const ordersData = ordersResult.data || [];
+
+      const visits = analyticsData.filter((e) => e.event_type === "visit").length;
+      const clicksPlan = analyticsData.filter((e) => e.event_type === "click_plan").length;
+      const clicksWhatsApp = analyticsData.filter((e) => e.event_type === "click_whatsapp").length;
+
+      const paidOrders = ordersData.filter((o: any) => o.status === "paid");
+      const payments = paidOrders.length;
+      const totalRevenueCents = paidOrders.reduce(
+        (sum: number, order: any) => sum + (order.amount_cents || 0),
+        0,
+      );
 
       setStats({
-        visits: fakeVisits,
-        clicksPlan: fakeClicksPlan,
-        clicksWhatsApp: fakeClicksWhatsApp,
-        payments: 0, // Will be updated quando você integrar a API de pagamentos real
-        revenue: 540, // Dado fake para mostrar faturamento
+        visits,
+        clicksPlan,
+        clicksWhatsApp,
+        payments,
+        revenue: totalRevenueCents / 100,
       });
     };
 
@@ -70,7 +82,18 @@ const Admin = () => {
         },
         () => {
           fetchStats();
-        }
+        },
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "orders",
+        },
+        () => {
+          fetchStats();
+        },
       )
       .subscribe();
 
