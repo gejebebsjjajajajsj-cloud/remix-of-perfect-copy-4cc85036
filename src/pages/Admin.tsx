@@ -221,9 +221,9 @@ const Admin = () => {
       </div>
 
       {showEditor && (
-        <div className="fixed inset-0 z-40 flex bg-background/60 backdrop-blur-sm">
-          {/* Barra lateral simples com navegação */}
-          <aside className="flex h-full w-60 flex-col border-r border-border bg-card/95">
+        <div className="fixed inset-0 z-40 flex bg-background/80 backdrop-blur-sm">
+          {/* Sidebar desktop */}
+          <aside className="hidden h-full w-56 flex-col border-r border-border bg-card/95 md:flex">
             <div className="flex items-center justify-between border-b border-border px-4 py-3">
               <div className="flex items-center gap-2 text-sm font-semibold">
                 <Menu className="h-4 w-4" />
@@ -256,24 +256,39 @@ const Admin = () => {
             </div>
           </aside>
 
-          {/* Área principal de configuração */}
-          <section className="flex-1 overflow-y-auto bg-background px-3 py-4 md:px-6 md:py-6">
+          {/* Área principal de configuração (mobile = tela cheia, desktop = ao lado do menu) */}
+          <section className="flex-1 overflow-y-auto bg-background px-3 py-3 md:px-6 md:py-6">
             <div className="mx-auto flex max-w-3xl flex-col gap-4">
-              <header className="flex flex-col gap-1 border-b border-border/60 pb-3 md:flex-row md:items-center md:justify-between">
-                <div>
-                  <h2 className="text-base font-semibold tracking-tight md:text-lg">Configurações da página</h2>
-                  <p className="text-xs text-muted-foreground">
-                    Edite todas as informações que aparecem na página principal.
-                  </p>
+              <header className="flex flex-col gap-2 rounded-lg border border-border/60 bg-card/90 px-3 py-2 text-xs md:flex-row md:items-center md:justify-between md:rounded-xl md:px-4 md:py-3 md:text-sm">
+                <div className="space-y-0.5">
+                  <div className="flex items-center justify-between gap-2 md:gap-3">
+                    <div>
+                      <h2 className="text-sm font-semibold tracking-tight md:text-base">
+                        Configurações da página
+                      </h2>
+                      <p className="text-[11px] text-muted-foreground">
+                        Edite tudo que aparece na página principal.
+                      </p>
+                    </div>
+                    {/* Botão de fechar visível no celular */}
+                    <Button
+                      size="icon"
+                      variant="outline"
+                      className="h-7 w-7 shrink-0 md:hidden"
+                      onClick={() => setShowEditor(false)}
+                    >
+                      <EyeOff className="h-3 w-3" />
+                    </Button>
+                  </div>
                 </div>
-                <div className="flex gap-2 pt-1 md:pt-0">
-                  <Button className="text-xs" size="sm" onClick={handleSaveConfig}>
-                    Salvar alterações
+                <div className="flex gap-1.5 pt-1 md:gap-2 md:pt-0">
+                  <Button className="h-8 px-3 text-[11px] md:h-8 md:px-4 md:text-xs" size="sm" onClick={handleSaveConfig}>
+                    Salvar
                   </Button>
                   <Button
                     variant="outline"
                     size="sm"
-                    className="text-xs"
+                    className="h-8 px-3 text-[11px] md:h-8 md:px-4 md:text-xs"
                     onClick={handleResetConfig}
                   >
                     Resetar
@@ -281,23 +296,23 @@ const Admin = () => {
                 </div>
               </header>
 
-              <div className="space-y-4 pb-4">
+              <div className="space-y-3 pb-3 text-xs md:space-y-4 md:text-sm">
                 {/* Cores */}
-                <Card className="space-y-3 p-4">
+                <Card className="space-y-2.5 p-3 md:space-y-3 md:p-4">
                   <div className="flex items-center gap-2">
-                    <div className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
-                      <Palette className="h-4 w-4 text-primary" />
+                    <div className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 md:h-8 md:w-8">
+                      <Palette className="h-3 w-3 text-primary md:h-4 md:w-4" />
                     </div>
                     <div>
-                      <h3 className="text-sm font-semibold">Cores da página</h3>
-                      <p className="text-xs text-muted-foreground">
-                        Personalize o fundo da página e as cores dos botões principais.
+                      <h3 className="text-xs font-semibold md:text-sm">Cores da página</h3>
+                      <p className="text-[10px] text-muted-foreground md:text-xs">
+                        Fundo da página e cores dos botões.
                       </p>
                     </div>
                   </div>
-                  <div className="grid gap-3 md:grid-cols-3">
+                  <div className="grid gap-2 md:grid-cols-3 md:gap-3">
                     <div className="space-y-1">
-                      <p className="text-[11px] font-medium text-muted-foreground">Cor de fundo</p>
+                      <p className="text-[10px] font-medium text-muted-foreground">Cor de fundo</p>
                       <Input
                         placeholder="Ex: #000000"
                         value={panelConfig.pageBackgroundColor}
@@ -307,7 +322,7 @@ const Admin = () => {
                       />
                     </div>
                     <div className="space-y-1">
-                      <p className="text-[11px] font-medium text-muted-foreground">Botão principal</p>
+                      <p className="text-[10px] font-medium text-muted-foreground">Botão principal</p>
                       <Input
                         placeholder="Ex: #ff00ff"
                         value={panelConfig.primaryButtonBgColor}
@@ -317,7 +332,7 @@ const Admin = () => {
                       />
                     </div>
                     <div className="space-y-1">
-                      <p className="text-[11px] font-medium text-muted-foreground">Botão WhatsApp</p>
+                      <p className="text-[10px] font-medium text-muted-foreground">Botão WhatsApp</p>
                       <Input
                         placeholder="Ex: #25D366"
                         value={panelConfig.whatsappButtonBgColor}
@@ -330,21 +345,21 @@ const Admin = () => {
                 </Card>
 
                 {/* Textos e botões */}
-                <Card className="space-y-3 p-4">
+                <Card className="space-y-2.5 p-3 md:space-y-3 md:p-4">
                   <div className="flex items-center gap-2">
-                    <div className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
-                      <Type className="h-4 w-4 text-primary" />
+                    <div className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 md:h-8 md:w-8">
+                      <Type className="h-3 w-3 text-primary md:h-4 md:w-4" />
                     </div>
                     <div>
-                      <h3 className="text-sm font-semibold">Textos e botões</h3>
-                      <p className="text-xs text-muted-foreground">
-                        Nome, subtítulo do perfil e textos dos botões de ação.
+                      <h3 className="text-xs font-semibold md:text-sm">Textos e botões</h3>
+                      <p className="text-[10px] text-muted-foreground md:text-xs">
+                        Nome, subtítulo e textos dos botões.
                       </p>
                     </div>
                   </div>
-                  <div className="grid gap-3 md:grid-cols-2">
+                  <div className="grid gap-2 md:grid-cols-2 md:gap-3">
                     <div className="space-y-1">
-                      <p className="text-[11px] font-medium text-muted-foreground">Nome do perfil</p>
+                      <p className="text-[10px] font-medium text-muted-foreground">Nome do perfil</p>
                       <Input
                         placeholder="Nome do perfil"
                         value={panelConfig.profileName}
@@ -354,7 +369,7 @@ const Admin = () => {
                       />
                     </div>
                     <div className="space-y-1">
-                      <p className="text-[11px] font-medium text-muted-foreground">Subtítulo</p>
+                      <p className="text-[10px] font-medium text-muted-foreground">Subtítulo</p>
                       <Input
                         placeholder="Subtítulo do perfil"
                         value={panelConfig.profileSubtitle}
@@ -364,9 +379,9 @@ const Admin = () => {
                       />
                     </div>
                   </div>
-                  <div className="grid gap-3 md:grid-cols-2">
+                  <div className="grid gap-2 md:grid-cols-2 md:gap-3">
                     <div className="space-y-1">
-                      <p className="text-[11px] font-medium text-muted-foreground">Texto botão principal</p>
+                      <p className="text-[10px] font-medium text-muted-foreground">Texto botão principal</p>
                       <Input
                         placeholder="Ex: Assinar agora"
                         value={panelConfig.primaryPlanLabel}
@@ -376,7 +391,7 @@ const Admin = () => {
                       />
                     </div>
                     <div className="space-y-1">
-                      <p className="text-[11px] font-medium text-muted-foreground">Preço botão principal</p>
+                      <p className="text-[10px] font-medium text-muted-foreground">Preço botão principal</p>
                       <Input
                         placeholder="Ex: R$ 29,90"
                         value={panelConfig.primaryPlanPriceText}
@@ -386,7 +401,7 @@ const Admin = () => {
                       />
                     </div>
                     <div className="space-y-1">
-                      <p className="text-[11px] font-medium text-muted-foreground">Link botão principal</p>
+                      <p className="text-[10px] font-medium text-muted-foreground">Link botão principal</p>
                       <Input
                         placeholder="URL da página de pagamento"
                         value={panelConfig.primaryPlanHref}
@@ -396,7 +411,7 @@ const Admin = () => {
                       />
                     </div>
                     <div className="space-y-1">
-                      <p className="text-[11px] font-medium text-muted-foreground">Texto botão WhatsApp</p>
+                      <p className="text-[10px] font-medium text-muted-foreground">Texto botão WhatsApp</p>
                       <Input
                         placeholder="Ex: Chamar no WhatsApp"
                         value={panelConfig.whatsappButtonLabel}
@@ -406,7 +421,7 @@ const Admin = () => {
                       />
                     </div>
                     <div className="space-y-1">
-                      <p className="text-[11px] font-medium text-muted-foreground">Preço botão WhatsApp</p>
+                      <p className="text-[10px] font-medium text-muted-foreground">Preço botão WhatsApp</p>
                       <Input
                         placeholder="Ex: R$ 150,00"
                         value={panelConfig.whatsappButtonPriceText}
@@ -419,21 +434,21 @@ const Admin = () => {
                 </Card>
 
                 {/* Fotos e banner */}
-                <Card className="space-y-3 p-4">
+                <Card className="space-y-2.5 p-3 md:space-y-3 md:p-4">
                   <div className="flex items-center gap-2">
-                    <div className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
-                      <Image className="h-4 w-4 text-primary" />
+                    <div className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 md:h-8 md:w-8">
+                      <Image className="h-3 w-3 text-primary md:h-4 md:w-4" />
                     </div>
                     <div>
-                      <h3 className="text-sm font-semibold">Fotos e banner</h3>
-                      <p className="text-xs text-muted-foreground">
-                        Imagem de capa, foto de perfil e foto de grid/feed.
+                      <h3 className="text-xs font-semibold md:text-sm">Fotos e banner</h3>
+                      <p className="text-[10px] text-muted-foreground md:text-xs">
+                        Imagem de capa, foto de perfil e foto de grid.
                       </p>
                     </div>
                   </div>
-                  <div className="space-y-3">
+                  <div className="space-y-2 md:space-y-3">
                     <div className="space-y-1">
-                      <p className="text-[11px] font-medium text-muted-foreground">Banner principal</p>
+                      <p className="text-[10px] font-medium text-muted-foreground">Banner principal</p>
                       <Input
                         placeholder="URL do banner principal"
                         value={panelConfig.heroBannerUrl}
@@ -442,9 +457,9 @@ const Admin = () => {
                         }
                       />
                     </div>
-                    <div className="grid gap-3 md:grid-cols-2">
+                    <div className="grid gap-2 md:grid-cols-2 md:gap-3">
                       <div className="space-y-1">
-                        <p className="text-[11px] font-medium text-muted-foreground">Foto de perfil</p>
+                        <p className="text-[10px] font-medium text-muted-foreground">Foto de perfil</p>
                         <Input
                           placeholder="URL da foto de perfil"
                           value={panelConfig.profileImageUrl}
@@ -454,7 +469,7 @@ const Admin = () => {
                         />
                       </div>
                       <div className="space-y-1">
-                        <p className="text-[11px] font-medium text-muted-foreground">Foto de grid/feed</p>
+                        <p className="text-[10px] font-medium text-muted-foreground">Foto de grid/feed</p>
                         <Input
                           placeholder="URL da foto de grid/feed"
                           value={panelConfig.gridImageUrl}
@@ -468,21 +483,21 @@ const Admin = () => {
                 </Card>
 
                 {/* Vídeos */}
-                <Card className="space-y-3 p-4">
+                <Card className="space-y-2.5 p-3 md:space-y-3 md:p-4">
                   <div className="flex items-center gap-2">
-                    <div className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
-                      <Video className="h-4 w-4 text-primary" />
+                    <div className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 md:h-8 md:w-8">
+                      <Video className="h-3 w-3 text-primary md:h-4 md:w-4" />
                     </div>
                     <div>
-                      <h3 className="text-sm font-semibold">Vídeos de prévia</h3>
-                      <p className="text-xs text-muted-foreground">
-                        URLs dos vídeos que aparecem na parte de baixo da página.
+                      <h3 className="text-xs font-semibold md:text-sm">Vídeos de prévia</h3>
+                      <p className="text-[10px] text-muted-foreground md:text-xs">
+                        URLs dos vídeos da parte de baixo da página.
                       </p>
                     </div>
                   </div>
-                  <div className="space-y-3">
+                  <div className="space-y-2 md:space-y-3">
                     <div className="space-y-1">
-                      <p className="text-[11px] font-medium text-muted-foreground">Vídeo principal</p>
+                      <p className="text-[10px] font-medium text-muted-foreground">Vídeo principal</p>
                       <Input
                         placeholder="URL do vídeo principal"
                         value={panelConfig.mainTeaserVideoUrl}
@@ -492,7 +507,7 @@ const Admin = () => {
                       />
                     </div>
                     <div className="space-y-1">
-                      <p className="text-[11px] font-medium text-muted-foreground">Segundo vídeo</p>
+                      <p className="text-[10px] font-medium text-muted-foreground">Segundo vídeo</p>
                       <Input
                         placeholder="URL do segundo vídeo"
                         value={panelConfig.secondaryTeaserVideoUrl}
@@ -505,21 +520,21 @@ const Admin = () => {
                 </Card>
 
                 {/* Métricas da capa */}
-                <Card className="space-y-3 p-4">
+                <Card className="space-y-2.5 p-3 md:space-y-3 md:p-4">
                   <div className="flex items-center gap-2">
-                    <div className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
-                      <TrendingUp className="h-4 w-4 text-primary" />
+                    <div className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 md:h-8 md:w-8">
+                      <TrendingUp className="h-3 w-3 text-primary md:h-4 md:w-4" />
                     </div>
                     <div>
-                      <h3 className="text-sm font-semibold">Métricas da capa</h3>
-                      <p className="text-xs text-muted-foreground">
+                      <h3 className="text-xs font-semibold md:text-sm">Métricas da capa</h3>
+                      <p className="text-[10px] text-muted-foreground md:text-xs">
                         Números que aparecem em cima do banner (posts e likes).
                       </p>
                     </div>
                   </div>
-                  <div className="grid gap-3 md:grid-cols-2">
+                  <div className="grid gap-2 md:grid-cols-2 md:gap-3">
                     <div className="space-y-1">
-                      <p className="text-[11px] font-medium text-muted-foreground">Número de posts</p>
+                      <p className="text-[10px] font-medium text-muted-foreground">Número de posts</p>
                       <Input
                         placeholder="Ex: 744"
                         value={panelConfig.heroPostsCount}
@@ -529,7 +544,7 @@ const Admin = () => {
                       />
                     </div>
                     <div className="space-y-1">
-                      <p className="text-[11px] font-medium text-muted-foreground">Número de likes</p>
+                      <p className="text-[10px] font-medium text-muted-foreground">Número de likes</p>
                       <Input
                         placeholder="Ex: 370k"
                         value={panelConfig.heroLikesCount}
