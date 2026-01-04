@@ -52,7 +52,12 @@ const Admin = () => {
   };
 
   const handleImageUpload = (
-    field: "heroBannerUrl" | "profileImageUrl" | "gridImageUrl",
+    field:
+      | "heroBannerUrl"
+      | "profileImageUrl"
+      | "gridImageUrl"
+      | "mainTeaserVideoUrl"
+      | "secondaryTeaserVideoUrl",
   ) => (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
@@ -434,16 +439,6 @@ const Admin = () => {
                       />
                     </div>
                     <div className="space-y-1">
-                      <p className="text-[10px] font-medium text-muted-foreground">Link botão principal</p>
-                      <Input
-                        placeholder="URL da página de pagamento"
-                        value={panelConfig.primaryPlanHref}
-                        onChange={(e) =>
-                          setPanelConfig({ ...panelConfig, primaryPlanHref: e.target.value })
-                        }
-                      />
-                    </div>
-                    <div className="space-y-1">
                       <p className="text-[10px] font-medium text-muted-foreground">Texto botão WhatsApp</p>
                       <Input
                         placeholder="Ex: Chamar no WhatsApp"
@@ -524,7 +519,7 @@ const Admin = () => {
                     <div>
                       <h3 className="text-xs font-semibold md:text-sm">Vídeos de prévia</h3>
                       <p className="text-[10px] text-muted-foreground md:text-xs">
-                        URLs dos vídeos da parte de baixo da página.
+                        Faça upload dos vídeos que aparecem na parte de baixo da página.
                       </p>
                     </div>
                   </div>
@@ -532,21 +527,19 @@ const Admin = () => {
                     <div className="space-y-1">
                       <p className="text-[10px] font-medium text-muted-foreground">Vídeo principal</p>
                       <Input
-                        placeholder="URL do vídeo principal"
-                        value={panelConfig.mainTeaserVideoUrl}
-                        onChange={(e) =>
-                          setPanelConfig({ ...panelConfig, mainTeaserVideoUrl: e.target.value })
-                        }
+                        type="file"
+                        accept="video/*"
+                        onChange={handleImageUpload("mainTeaserVideoUrl")}
+                        className="cursor-pointer"
                       />
                     </div>
                     <div className="space-y-1">
                       <p className="text-[10px] font-medium text-muted-foreground">Segundo vídeo</p>
                       <Input
-                        placeholder="URL do segundo vídeo"
-                        value={panelConfig.secondaryTeaserVideoUrl}
-                        onChange={(e) =>
-                          setPanelConfig({ ...panelConfig, secondaryTeaserVideoUrl: e.target.value })
-                        }
+                        type="file"
+                        accept="video/*"
+                        onChange={handleImageUpload("secondaryTeaserVideoUrl")}
+                        className="cursor-pointer"
                       />
                     </div>
                   </div>
