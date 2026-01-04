@@ -15,11 +15,13 @@ import profileBolzani from "@/assets/profile-bolzani.jpg";
 import bolzaniGrid from "@/assets/bolzani-instagram-grid.jpg";
 import { Lock, PlayCircle } from "lucide-react";
 
-const subscriptionPlans = [
+import { loadSiteConfig, SiteConfig } from "@/config/siteConfig";
+
+const subscriptionPlansFromConfig = (config: SiteConfig) => [
   {
-    label: "Assinar (30 dias)",
-    price: "R$ 29,90",
-    href: "https://pay.privecy.com.br/checkout/2985a976-e091-4962-a8ca-c61e446f8387",
+    label: config.primaryPlanLabel,
+    price: config.primaryPlanPriceText,
+    href: config.primaryPlanHref,
   },
 ];
 
@@ -34,6 +36,7 @@ const Index = () => {
   const [currentOrderId, setCurrentOrderId] = useState<string | null>(null);
   const [currentOrderType, setCurrentOrderType] = useState<"subscription" | "whatsapp" | null>(null);
   const [showWhatsappAccessModal, setShowWhatsappAccessModal] = useState(false);
+  const [siteConfig, setSiteConfig] = useState<SiteConfig>(() => loadSiteConfig());
 
   useEffect(() => {
     // Track page visit
@@ -143,7 +146,10 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div
+      className="min-h-screen bg-background text-foreground"
+      style={siteConfig.pageBackgroundColor ? { backgroundColor: siteConfig.pageBackgroundColor } : undefined}
+    >
       <main className="relative overflow-hidden">
         <header className="container flex items-center justify-between py-6">
           <div className="flex items-center gap-3">
@@ -174,20 +180,20 @@ const Index = () => {
           <div
             className="relative flex h-40 items-end justify-end overflow-hidden rounded-3xl bg-cover bg-center bg-no-repeat md:h-48"
             style={{
-              backgroundImage: `linear-gradient(0deg, rgba(0,0,0,0.9), transparent), url(${banner})`,
+              backgroundImage: `linear-gradient(0deg, rgba(0,0,0,0.9), transparent), url(${siteConfig.heroBannerUrl})`,
             }}
             aria-label="Capa do perfil com estatísticas"
           >
             <dl className="mr-4 mb-2 flex gap-3 text-xs text-foreground md:mb-3">
               <div className="flex items-baseline gap-1">
                 <dt className="sr-only">Posts</dt>
-                <dd className="text-sm font-semibold text-foreground">744</dd>
+                <dd className="text-sm font-semibold text-foreground">{siteConfig.heroPostsCount}</dd>
                 <span className="text-[0.7rem] tracking-wide text-foreground/90">posts</span>
               </div>
               <span className="text-foreground/80">•</span>
               <div className="flex items-baseline gap-1">
                 <dt className="sr-only">Curtidas</dt>
-                <dd className="text-sm font-semibold text-foreground">370k</dd>
+                <dd className="text-sm font-semibold text-foreground">{siteConfig.heroLikesCount}</dd>
                 <span className="text-[0.7rem] tracking-wide text-foreground/90">likes</span>
               </div>
             </dl>
@@ -202,7 +208,7 @@ const Index = () => {
               <div className="relative -mt-12 md:-mt-16">
                 <div className="relative inline-flex items-center justify-center rounded-full border-4 border-destructive shadow-[0_0_20px_rgba(248,113,113,0.8)]">
                   <img
-                    src={profileBolzani}
+                    src={siteConfig.profileImageUrl}
                     alt="Foto de perfil de Bolzani"
                     className="h-24 w-24 rounded-full object-cover md:h-28 md:w-28"
                     loading="lazy"
@@ -219,14 +225,14 @@ const Index = () => {
                     id="perfil-heading"
                     className="font-display text-2xl font-semibold tracking-tight md:text-3xl"
                   >
-                    Bolzani
+                    {siteConfig.profileName}
                   </h1>
                   <span className="inline-flex items-center rounded-full bg-primary/10 px-2 py-0.5 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-primary">
                     verificado
                   </span>
                 </div>
                 <p className="mt-1 text-[0.7rem] uppercase tracking-[0.18em] text-muted-foreground/80">
-                  Conteúdo adulto exclusivo
+                  {siteConfig.profileSubtitle}
                 </p>
               </div>
             </section>
@@ -240,29 +246,33 @@ const Index = () => {
               </header>
 
               <div className="mt-2 space-y-3">
-                {subscriptionPlans.map((plan) => (
-                  <Button
-                    key={plan.label}
-                    variant="cta"
-                    className="flex w-full items-center justify-between rounded-2xl px-5 py-4 text-base font-semibold shadow-lg shadow-primary/40 md:text-lg"
-                    onClick={() => handlePixCheckout(2990, "subscription")}
-                  >
-                    <span>{plan.label}</span>
-                    <span className="flex items-center gap-2 text-sm font-semibold">{plan.price}</span>
-                  </Button>
-                ))}
-
+              {subscriptionPlansFromConfig(siteConfig).map((plan) => (
                 <Button
-                  variant="whatsapp"
-                  className="flex w-full items-center justify-between rounded-2xl px-5 py-4 text-base font-semibold shadow-lg shadow-emerald-500/40 md:text-lg"
-                  onClick={() => {
-                    trackEvent("click_whatsapp");
-                    handlePixCheckout(15000, "whatsapp");
-                  }}
+                  key={plan.label}
+                  variant="cta"
+                  className="flex w-full items-center justify-between rounded-2xl px-5 py-4 text-base font-semibold shadow-lg shadow-primary/40 md:text-lg"
+                  style={siteConfig.primaryButtonBgColor ? { backgroundColor: siteConfig.primaryButtonBgColor } : undefined}
+                  onClick={() => handlePixCheckout(2990, "subscription")}
                 >
-                  <span>Chamar no WhatsApp</span>
-                  <span className="flex items-center gap-2 text-sm font-semibold">R$ 150,00</span>
+                  <span>{plan.label}</span>
+                  <span className="flex items-center gap-2 text-sm font-semibold">{plan.price}</span>
                 </Button>
+              ))}
+
+              <Button
+                variant="whatsapp"
+                className="flex w-full items-center justify-between rounded-2xl px-5 py-4 text-base font-semibold shadow-lg shadow-emerald-500/40 md:text-lg"
+                style={siteConfig.whatsappButtonBgColor ? { backgroundColor: siteConfig.whatsappButtonBgColor } : undefined}
+                onClick={() => {
+                  trackEvent("click_whatsapp");
+                  handlePixCheckout(15000, "whatsapp");
+                }}
+              >
+                <span>{siteConfig.whatsappButtonLabel}</span>
+                <span className="flex items-center gap-2 text-sm font-semibold">
+                  {siteConfig.whatsappButtonPriceText}
+                </span>
+              </Button>
               </div>
 
               <p className="flex items-center gap-2 text-[0.7rem] text-muted-foreground">
@@ -285,7 +295,7 @@ const Index = () => {
           <div className="grid gap-4" aria-label="Prévia em vídeo do conteúdo da Kamylinha">
             <figure className="card-elevated overflow-hidden rounded-3xl">
               <video
-                src={teaserHighlight}
+                src={siteConfig.mainTeaserVideoUrl}
                 className="h-full w-full object-cover"
                 controls
                 playsInline
@@ -299,7 +309,7 @@ const Index = () => {
             aria-label="Prévia em foto do feed da Bolzani"
           >
             <img
-              src={bolzaniGrid}
+              src={siteConfig.gridImageUrl}
               alt="Prévia do feed da Bolzani com três fotos lado a lado"
               className="h-full w-full object-cover"
               loading="lazy"
