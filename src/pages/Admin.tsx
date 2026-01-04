@@ -221,174 +221,328 @@ const Admin = () => {
       </div>
 
       {showEditor && (
-        <div className="fixed inset-0 z-40 flex">
-          <div className="flex h-full w-80 max-w-full flex-col gap-4 border-r border-border bg-card p-4 shadow-xl">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
+        <div className="fixed inset-0 z-40 flex bg-background/60 backdrop-blur-sm">
+          {/* Barra lateral simples com navegação */}
+          <aside className="flex h-full w-60 flex-col border-r border-border bg-card/95">
+            <div className="flex items-center justify-between border-b border-border px-4 py-3">
+              <div className="flex items-center gap-2 text-sm font-semibold">
                 <Menu className="h-4 w-4" />
-                <span className="text-sm font-semibold">Editor do painel</span>
+                <span>Menu admin</span>
               </div>
-              <Button size="icon" variant="ghost" className="h-7 w-7" onClick={() => setShowEditor(false)}>
+              <Button
+                size="icon"
+                variant="ghost"
+                className="h-7 w-7"
+                onClick={() => setShowEditor(false)}
+              >
                 <EyeOff className="h-4 w-4" />
               </Button>
             </div>
 
-            <div className="flex-1 space-y-4 overflow-y-auto pr-1 text-xs">
-              <div className="space-y-2">
-                <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                  <Palette className="h-3 w-3" />
-                  <span>Cores</span>
-                </div>
-                <Input
-                  placeholder="Cor de fundo (ex: #000000)"
-                  value={panelConfig.pageBackgroundColor}
-                  onChange={(e) => setPanelConfig({ ...panelConfig, pageBackgroundColor: e.target.value })}
-                />
-                <Input
-                  placeholder="Cor do botão principal (ex: #ff00ff)"
-                  value={panelConfig.primaryButtonBgColor}
-                  onChange={(e) =>
-                    setPanelConfig({ ...panelConfig, primaryButtonBgColor: e.target.value })
-                  }
-                />
-                <Input
-                  placeholder="Cor do botão WhatsApp (ex: #25D366)"
-                  value={panelConfig.whatsappButtonBgColor}
-                  onChange={(e) =>
-                    setPanelConfig({ ...panelConfig, whatsappButtonBgColor: e.target.value })
-                  }
-                />
-              </div>
-
-              <div className="space-y-2">
-                <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                  <Type className="h-3 w-3" />
-                  <span>Textos e botões</span>
-                </div>
-                <Input
-                  placeholder="Nome do perfil"
-                  value={panelConfig.profileName}
-                  onChange={(e) => setPanelConfig({ ...panelConfig, profileName: e.target.value })}
-                />
-                <Input
-                  placeholder="Subtítulo do perfil"
-                  value={panelConfig.profileSubtitle}
-                  onChange={(e) => setPanelConfig({ ...panelConfig, profileSubtitle: e.target.value })}
-                />
-                <Input
-                  placeholder="Texto do botão principal"
-                  value={panelConfig.primaryPlanLabel}
-                  onChange={(e) => setPanelConfig({ ...panelConfig, primaryPlanLabel: e.target.value })}
-                />
-                <Input
-                  placeholder="Preço exibido no botão principal"
-                  value={panelConfig.primaryPlanPriceText}
-                  onChange={(e) =>
-                    setPanelConfig({ ...panelConfig, primaryPlanPriceText: e.target.value })
-                  }
-                />
-                <Input
-                  placeholder="Link do botão principal"
-                  value={panelConfig.primaryPlanHref}
-                  onChange={(e) => setPanelConfig({ ...panelConfig, primaryPlanHref: e.target.value })}
-                />
-                <Input
-                  placeholder="Texto do botão WhatsApp"
-                  value={panelConfig.whatsappButtonLabel}
-                  onChange={(e) =>
-                    setPanelConfig({ ...panelConfig, whatsappButtonLabel: e.target.value })
-                  }
-                />
-                <Input
-                  placeholder="Preço exibido no botão WhatsApp"
-                  value={panelConfig.whatsappButtonPriceText}
-                  onChange={(e) =>
-                    setPanelConfig({ ...panelConfig, whatsappButtonPriceText: e.target.value })
-                  }
-                />
-              </div>
-
-              <div className="space-y-2">
-                <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                  <Image className="h-3 w-3" />
-                  <span>Fotos e banner</span>
-                </div>
-                <Input
-                  placeholder="URL do banner principal"
-                  value={panelConfig.heroBannerUrl}
-                  onChange={(e) => setPanelConfig({ ...panelConfig, heroBannerUrl: e.target.value })}
-                />
-                <Input
-                  placeholder="URL da foto de perfil"
-                  value={panelConfig.profileImageUrl}
-                  onChange={(e) => setPanelConfig({ ...panelConfig, profileImageUrl: e.target.value })}
-                />
-                <Input
-                  placeholder="URL da foto de grid/feed"
-                  value={panelConfig.gridImageUrl}
-                  onChange={(e) => setPanelConfig({ ...panelConfig, gridImageUrl: e.target.value })}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                  <Video className="h-3 w-3" />
-                  <span>Vídeos de prévia</span>
-                </div>
-                <Input
-                  placeholder="URL do vídeo principal"
-                  value={panelConfig.mainTeaserVideoUrl}
-                  onChange={(e) =>
-                    setPanelConfig({ ...panelConfig, mainTeaserVideoUrl: e.target.value })
-                  }
-                />
-                <Input
-                  placeholder="URL do segundo vídeo"
-                  value={panelConfig.secondaryTeaserVideoUrl}
-                  onChange={(e) =>
-                    setPanelConfig({ ...panelConfig, secondaryTeaserVideoUrl: e.target.value })
-                  }
-                />
-              </div>
-
-              <div className="space-y-2">
-                <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                  <TrendingUp className="h-3 w-3" />
-                  <span>Métricas da capa</span>
-                </div>
-                <Input
-                  placeholder="Número de posts"
-                  value={panelConfig.heroPostsCount}
-                  onChange={(e) => setPanelConfig({ ...panelConfig, heroPostsCount: e.target.value })}
-                />
-                <Input
-                  placeholder="Número de likes"
-                  value={panelConfig.heroLikesCount}
-                  onChange={(e) => setPanelConfig({ ...panelConfig, heroLikesCount: e.target.value })}
-                />
-              </div>
-            </div>
-
-            <div className="flex gap-2 pt-1">
-              <Button className="flex-1 text-xs" size="sm" onClick={handleSaveConfig}>
-                Salvar alterações
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                className="text-xs"
-                onClick={handleResetConfig}
+            <nav className="flex-1 space-y-1 px-3 py-4 text-sm">
+              <button
+                type="button"
+                className="flex w-full items-center gap-2 rounded-lg bg-primary/10 px-3 py-2 text-left text-primary shadow-sm transition hover:bg-primary/15"
               >
-                Resetar
-              </Button>
+                <span className="inline-flex h-6 w-6 items-center justify-center rounded-md bg-primary/20">
+                  <Palette className="h-3 w-3" />
+                </span>
+                <span>Configurações</span>
+              </button>
+            </nav>
+
+            <div className="border-t border-border px-3 py-3 text-[11px] text-muted-foreground">
+              <p>Painel de edição da página principal.</p>
             </div>
-          </div>
-          <button
-            type="button"
-            className="flex-1 bg-background/40"
-            onClick={() => setShowEditor(false)}
-            aria-label="Fechar editor"
-          />
+          </aside>
+
+          {/* Área principal de configuração */}
+          <section className="flex-1 overflow-y-auto bg-background px-3 py-4 md:px-6 md:py-6">
+            <div className="mx-auto flex max-w-3xl flex-col gap-4">
+              <header className="flex flex-col gap-1 border-b border-border/60 pb-3 md:flex-row md:items-center md:justify-between">
+                <div>
+                  <h2 className="text-base font-semibold tracking-tight md:text-lg">Configurações da página</h2>
+                  <p className="text-xs text-muted-foreground">
+                    Edite todas as informações que aparecem na página principal.
+                  </p>
+                </div>
+                <div className="flex gap-2 pt-1 md:pt-0">
+                  <Button className="text-xs" size="sm" onClick={handleSaveConfig}>
+                    Salvar alterações
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="text-xs"
+                    onClick={handleResetConfig}
+                  >
+                    Resetar
+                  </Button>
+                </div>
+              </header>
+
+              <div className="space-y-4 pb-4">
+                {/* Cores */}
+                <Card className="space-y-3 p-4">
+                  <div className="flex items-center gap-2">
+                    <div className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
+                      <Palette className="h-4 w-4 text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-semibold">Cores da página</h3>
+                      <p className="text-xs text-muted-foreground">
+                        Personalize o fundo da página e as cores dos botões principais.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="grid gap-3 md:grid-cols-3">
+                    <div className="space-y-1">
+                      <p className="text-[11px] font-medium text-muted-foreground">Cor de fundo</p>
+                      <Input
+                        placeholder="Ex: #000000"
+                        value={panelConfig.pageBackgroundColor}
+                        onChange={(e) =>
+                          setPanelConfig({ ...panelConfig, pageBackgroundColor: e.target.value })
+                        }
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-[11px] font-medium text-muted-foreground">Botão principal</p>
+                      <Input
+                        placeholder="Ex: #ff00ff"
+                        value={panelConfig.primaryButtonBgColor}
+                        onChange={(e) =>
+                          setPanelConfig({ ...panelConfig, primaryButtonBgColor: e.target.value })
+                        }
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-[11px] font-medium text-muted-foreground">Botão WhatsApp</p>
+                      <Input
+                        placeholder="Ex: #25D366"
+                        value={panelConfig.whatsappButtonBgColor}
+                        onChange={(e) =>
+                          setPanelConfig({ ...panelConfig, whatsappButtonBgColor: e.target.value })
+                        }
+                      />
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Textos e botões */}
+                <Card className="space-y-3 p-4">
+                  <div className="flex items-center gap-2">
+                    <div className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
+                      <Type className="h-4 w-4 text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-semibold">Textos e botões</h3>
+                      <p className="text-xs text-muted-foreground">
+                        Nome, subtítulo do perfil e textos dos botões de ação.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="grid gap-3 md:grid-cols-2">
+                    <div className="space-y-1">
+                      <p className="text-[11px] font-medium text-muted-foreground">Nome do perfil</p>
+                      <Input
+                        placeholder="Nome do perfil"
+                        value={panelConfig.profileName}
+                        onChange={(e) =>
+                          setPanelConfig({ ...panelConfig, profileName: e.target.value })
+                        }
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-[11px] font-medium text-muted-foreground">Subtítulo</p>
+                      <Input
+                        placeholder="Subtítulo do perfil"
+                        value={panelConfig.profileSubtitle}
+                        onChange={(e) =>
+                          setPanelConfig({ ...panelConfig, profileSubtitle: e.target.value })
+                        }
+                      />
+                    </div>
+                  </div>
+                  <div className="grid gap-3 md:grid-cols-2">
+                    <div className="space-y-1">
+                      <p className="text-[11px] font-medium text-muted-foreground">Texto botão principal</p>
+                      <Input
+                        placeholder="Ex: Assinar agora"
+                        value={panelConfig.primaryPlanLabel}
+                        onChange={(e) =>
+                          setPanelConfig({ ...panelConfig, primaryPlanLabel: e.target.value })
+                        }
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-[11px] font-medium text-muted-foreground">Preço botão principal</p>
+                      <Input
+                        placeholder="Ex: R$ 29,90"
+                        value={panelConfig.primaryPlanPriceText}
+                        onChange={(e) =>
+                          setPanelConfig({ ...panelConfig, primaryPlanPriceText: e.target.value })
+                        }
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-[11px] font-medium text-muted-foreground">Link botão principal</p>
+                      <Input
+                        placeholder="URL da página de pagamento"
+                        value={panelConfig.primaryPlanHref}
+                        onChange={(e) =>
+                          setPanelConfig({ ...panelConfig, primaryPlanHref: e.target.value })
+                        }
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-[11px] font-medium text-muted-foreground">Texto botão WhatsApp</p>
+                      <Input
+                        placeholder="Ex: Chamar no WhatsApp"
+                        value={panelConfig.whatsappButtonLabel}
+                        onChange={(e) =>
+                          setPanelConfig({ ...panelConfig, whatsappButtonLabel: e.target.value })
+                        }
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-[11px] font-medium text-muted-foreground">Preço botão WhatsApp</p>
+                      <Input
+                        placeholder="Ex: R$ 150,00"
+                        value={panelConfig.whatsappButtonPriceText}
+                        onChange={(e) =>
+                          setPanelConfig({ ...panelConfig, whatsappButtonPriceText: e.target.value })
+                        }
+                      />
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Fotos e banner */}
+                <Card className="space-y-3 p-4">
+                  <div className="flex items-center gap-2">
+                    <div className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
+                      <Image className="h-4 w-4 text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-semibold">Fotos e banner</h3>
+                      <p className="text-xs text-muted-foreground">
+                        Imagem de capa, foto de perfil e foto de grid/feed.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="space-y-1">
+                      <p className="text-[11px] font-medium text-muted-foreground">Banner principal</p>
+                      <Input
+                        placeholder="URL do banner principal"
+                        value={panelConfig.heroBannerUrl}
+                        onChange={(e) =>
+                          setPanelConfig({ ...panelConfig, heroBannerUrl: e.target.value })
+                        }
+                      />
+                    </div>
+                    <div className="grid gap-3 md:grid-cols-2">
+                      <div className="space-y-1">
+                        <p className="text-[11px] font-medium text-muted-foreground">Foto de perfil</p>
+                        <Input
+                          placeholder="URL da foto de perfil"
+                          value={panelConfig.profileImageUrl}
+                          onChange={(e) =>
+                            setPanelConfig({ ...panelConfig, profileImageUrl: e.target.value })
+                          }
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <p className="text-[11px] font-medium text-muted-foreground">Foto de grid/feed</p>
+                        <Input
+                          placeholder="URL da foto de grid/feed"
+                          value={panelConfig.gridImageUrl}
+                          onChange={(e) =>
+                            setPanelConfig({ ...panelConfig, gridImageUrl: e.target.value })
+                          }
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Vídeos */}
+                <Card className="space-y-3 p-4">
+                  <div className="flex items-center gap-2">
+                    <div className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
+                      <Video className="h-4 w-4 text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-semibold">Vídeos de prévia</h3>
+                      <p className="text-xs text-muted-foreground">
+                        URLs dos vídeos que aparecem na parte de baixo da página.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="space-y-1">
+                      <p className="text-[11px] font-medium text-muted-foreground">Vídeo principal</p>
+                      <Input
+                        placeholder="URL do vídeo principal"
+                        value={panelConfig.mainTeaserVideoUrl}
+                        onChange={(e) =>
+                          setPanelConfig({ ...panelConfig, mainTeaserVideoUrl: e.target.value })
+                        }
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-[11px] font-medium text-muted-foreground">Segundo vídeo</p>
+                      <Input
+                        placeholder="URL do segundo vídeo"
+                        value={panelConfig.secondaryTeaserVideoUrl}
+                        onChange={(e) =>
+                          setPanelConfig({ ...panelConfig, secondaryTeaserVideoUrl: e.target.value })
+                        }
+                      />
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Métricas da capa */}
+                <Card className="space-y-3 p-4">
+                  <div className="flex items-center gap-2">
+                    <div className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
+                      <TrendingUp className="h-4 w-4 text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-semibold">Métricas da capa</h3>
+                      <p className="text-xs text-muted-foreground">
+                        Números que aparecem em cima do banner (posts e likes).
+                      </p>
+                    </div>
+                  </div>
+                  <div className="grid gap-3 md:grid-cols-2">
+                    <div className="space-y-1">
+                      <p className="text-[11px] font-medium text-muted-foreground">Número de posts</p>
+                      <Input
+                        placeholder="Ex: 744"
+                        value={panelConfig.heroPostsCount}
+                        onChange={(e) =>
+                          setPanelConfig({ ...panelConfig, heroPostsCount: e.target.value })
+                        }
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-[11px] font-medium text-muted-foreground">Número de likes</p>
+                      <Input
+                        placeholder="Ex: 370k"
+                        value={panelConfig.heroLikesCount}
+                        onChange={(e) =>
+                          setPanelConfig({ ...panelConfig, heroLikesCount: e.target.value })
+                        }
+                      />
+                    </div>
+                  </div>
+                </Card>
+              </div>
+            </div>
+          </section>
         </div>
       )}
     </div>
