@@ -1,8 +1,20 @@
-import { useState } from "react";
+import { useState, ChangeEvent } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Eye, EyeOff, Menu, TrendingUp, MousePointer, MessageCircle, DollarSign, Palette, Image, Video, Type } from "lucide-react";
+import {
+  Eye,
+  EyeOff,
+  Menu,
+  TrendingUp,
+  MousePointer,
+  MessageCircle,
+  DollarSign,
+  Palette,
+  Image,
+  Video,
+  Type,
+} from "lucide-react";
 import { toast } from "sonner";
 import { defaultSiteConfig, loadSiteConfig, saveSiteConfig, SiteConfig } from "@/config/siteConfig";
 
@@ -37,6 +49,24 @@ const Admin = () => {
   const handleSaveConfig = () => {
     saveSiteConfig(panelConfig);
     toast.success("Configurações do painel salvas!");
+  };
+
+  const handleImageUpload = (
+    field: "heroBannerUrl" | "profileImageUrl" | "gridImageUrl",
+  ) => (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result as string;
+      setPanelConfig((current) => ({
+        ...current,
+        [field]: result,
+      }));
+    };
+
+    reader.readAsDataURL(file);
   };
 
   const handleResetConfig = () => {
@@ -314,31 +344,34 @@ const Admin = () => {
                     <div className="space-y-1">
                       <p className="text-[10px] font-medium text-muted-foreground">Cor de fundo</p>
                       <Input
-                        placeholder="Ex: #000000"
-                        value={panelConfig.pageBackgroundColor}
+                        type="color"
+                        value={panelConfig.pageBackgroundColor || "#000000"}
                         onChange={(e) =>
                           setPanelConfig({ ...panelConfig, pageBackgroundColor: e.target.value })
                         }
+                        className="h-9 w-full cursor-pointer rounded-md border border-border bg-transparent p-1"
                       />
                     </div>
                     <div className="space-y-1">
                       <p className="text-[10px] font-medium text-muted-foreground">Botão principal</p>
                       <Input
-                        placeholder="Ex: #ff00ff"
-                        value={panelConfig.primaryButtonBgColor}
+                        type="color"
+                        value={panelConfig.primaryButtonBgColor || "#ff0000"}
                         onChange={(e) =>
                           setPanelConfig({ ...panelConfig, primaryButtonBgColor: e.target.value })
                         }
+                        className="h-9 w-full cursor-pointer rounded-md border border-border bg-transparent p-1"
                       />
                     </div>
                     <div className="space-y-1">
                       <p className="text-[10px] font-medium text-muted-foreground">Botão WhatsApp</p>
                       <Input
-                        placeholder="Ex: #25D366"
-                        value={panelConfig.whatsappButtonBgColor}
+                        type="color"
+                        value={panelConfig.whatsappButtonBgColor || "#25D366"}
                         onChange={(e) =>
                           setPanelConfig({ ...panelConfig, whatsappButtonBgColor: e.target.value })
                         }
+                        className="h-9 w-full cursor-pointer rounded-md border border-border bg-transparent p-1"
                       />
                     </div>
                   </div>
@@ -450,32 +483,32 @@ const Admin = () => {
                     <div className="space-y-1">
                       <p className="text-[10px] font-medium text-muted-foreground">Banner principal</p>
                       <Input
-                        placeholder="URL do banner principal"
-                        value={panelConfig.heroBannerUrl}
-                        onChange={(e) =>
-                          setPanelConfig({ ...panelConfig, heroBannerUrl: e.target.value })
-                        }
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageUpload("heroBannerUrl")}
+                        className="cursor-pointer"
                       />
+                      <p className="text-[10px] text-muted-foreground">
+                        Faça o upload da imagem de capa. Não precisa de link.
+                      </p>
                     </div>
                     <div className="grid gap-2 md:grid-cols-2 md:gap-3">
                       <div className="space-y-1">
                         <p className="text-[10px] font-medium text-muted-foreground">Foto de perfil</p>
                         <Input
-                          placeholder="URL da foto de perfil"
-                          value={panelConfig.profileImageUrl}
-                          onChange={(e) =>
-                            setPanelConfig({ ...panelConfig, profileImageUrl: e.target.value })
-                          }
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageUpload("profileImageUrl")}
+                          className="cursor-pointer"
                         />
                       </div>
                       <div className="space-y-1">
                         <p className="text-[10px] font-medium text-muted-foreground">Foto de grid/feed</p>
                         <Input
-                          placeholder="URL da foto de grid/feed"
-                          value={panelConfig.gridImageUrl}
-                          onChange={(e) =>
-                            setPanelConfig({ ...panelConfig, gridImageUrl: e.target.value })
-                          }
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageUpload("gridImageUrl")}
+                          className="cursor-pointer"
                         />
                       </div>
                     </div>
